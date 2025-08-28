@@ -33,7 +33,7 @@ export const getContract = async () => {
   const provider = new ethers.BrowserProvider(window.ethereum)
   const signer = await provider.getSigner()
   const contractInfo = await loadContractInfo()
-  const networkId = '5777'
+  const networkId = '11155111'
 
   const contractAddress = contractInfo.networks[networkId].address
   const contract = new ethers.Contract(contractAddress, contractInfo.abi, signer)
@@ -43,11 +43,15 @@ export const getContract = async () => {
 
 export const getReadOnlyContract = async () => {
   const contractInfo = await loadContractInfo()
-  const networkId = '5777'
-  
+  const networkId = '11155111'
+
   // 使用Ganache的RPC端点创建只读provider
-  const provider = new ethers.JsonRpcProvider('http://127.0.0.1:7545')
-  
+  const provider = new ethers.JsonRpcProvider(
+    `https://sepolia.infura.io/v3/${import.meta.env.VITE_PROJECT_ID}`
+  );
+
+  console.log(import.meta.env)
+
   const contractAddress = contractInfo.networks[networkId].address
   const contract = new ethers.Contract(contractAddress, contractInfo.abi, provider)
 

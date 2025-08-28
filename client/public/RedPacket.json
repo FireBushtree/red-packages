@@ -16635,10 +16635,16 @@
       "links": {},
       "address": "0xD3B2e2C8FFa8b17b0175503cef802e5A865Ab394",
       "transactionHash": "0xbdd0fdc31fdcc1c562b56556fddc70d753cfff5b6ae1445c27bb6d8aa0c126c7"
+    },
+    "11155111": {
+      "events": {},
+      "links": {},
+      "address": "0x6E0a7473B7e4C2045224aa020c72Cf26665A198d",
+      "transactionHash": "0xa584044fb18b15f449a35211f89b4dc6e4c5f1a5ac84dcfd6e0915cd11ca61a0"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-08-28T06:24:02.529Z",
+  "updatedAt": "2025-08-28T10:17:17.591Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

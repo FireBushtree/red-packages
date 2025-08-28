@@ -83,11 +83,11 @@ function ClaimRedPacket() {
         contract.getRedPacketInfo(id),
         contract.getRedPacketAmounts(id)
       ])
-      
+
       // 计算已领取的金额数组
       const claimedCount = info[5].length
       const claimedAmounts = amounts.slice(0, claimedCount).map((amount: any) => ethers.formatEther(amount))
-      
+
       setPacketInfo({
         creator: info[0],
         totalAmount: ethers.formatEther(info[1]),
@@ -99,7 +99,7 @@ function ClaimRedPacket() {
       })
     } catch (error) {
       console.error('获取红包信息失败:', error)
-      alert('红包不存在或已过期')
+      // alert('红包不存在或已过期')
     } finally {
       setLoading(false)
     }
@@ -138,7 +138,7 @@ function ClaimRedPacket() {
       const contract = await getContract()
       const tx = await contract.claimRedPacket(id)
       await tx.wait()
-      
+
       alert('恭喜！红包领取成功！')
       setHasClaimed(true)
       loadPacketInfo() // 重新加载红包信息
@@ -192,7 +192,7 @@ function ClaimRedPacket() {
             <h1 className="text-2xl font-bold mb-2">🧧 恭喜发财</h1>
             <p className="text-red-100">来自 {packetInfo.creator.slice(0, 6)}...{packetInfo.creator.slice(-4)} 的红包</p>
           </div>
-          
+
           <div className="p-6">
             <div className="text-center mb-6">
               <div className="text-3xl font-bold text-gray-800 mb-2">

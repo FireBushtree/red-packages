@@ -77,6 +77,10 @@ module.exports = {
       ),
       network_id: 11155111, // sepolia 的 chainId
       gas: 5500000,
+      confirmations: 1,
+      timeoutBlocks: 200,    // 默认 50，改大点
+      networkCheckTimeout: 100000, // 100s
+      skipDryRun: true
     }
     //
     // An additional network, but with some advanced options…
