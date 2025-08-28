@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import CreateRedPacket from './pages/CreateRedPacket'
 
 function Home() {
   const [count, setCount] = useState(0)
@@ -40,6 +41,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/create" element={<CreateRedPacket />} />
       </Routes>
     </Router>
   )
