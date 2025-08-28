@@ -85,7 +85,6 @@ function ClaimRedPacket() {
       ])
       
       // 计算已领取的金额数组
-      const totalPackets = 5 // 合约固定为5个红包
       const claimedCount = info[5].length
       const claimedAmounts = amounts.slice(0, claimedCount).map((amount: any) => ethers.formatEther(amount))
       

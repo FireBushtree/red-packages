@@ -19,8 +19,10 @@ contract RedPacket {
     event RedPacketCreated(uint256 indexed packetId, address indexed creator, uint256 totalAmount, uint256 packetCount);
     event RedPacketClaimed(uint256 indexed packetId, address indexed claimer, uint256 amount);
 
-    function createRedPacket() external payable returns (uint256) {
-        require(msg.value == 0.0001 ether, "Must send exactly 0.0001 ETH");
+    function createRedPacket(uint256 packetCount) external payable returns (uint256) {
+        require(msg.value > 0, "Must send ETH");
+        require(packetCount > 0, "Packet count must be greater than 0");
+        require(packetCount <= 100, "Packet count must be less than or equal to 100");
 
         uint256 packetId = nextPacketId++;
         RedPacketInfo storage packet = redPackets[packetId];
@@ -28,12 +30,12 @@ contract RedPacket {
         packet.creator = msg.sender;
         packet.totalAmount = msg.value;
         packet.remainingAmount = msg.value;
-        packet.remainingPackets = 5;
+        packet.remainingPackets = packetCount;
         packet.createdAt = block.timestamp;
 
-        packet.amounts = _splitAmount(msg.value, 5);
+        packet.amounts = _splitAmount(msg.value, packetCount);
 
-        emit RedPacketCreated(packetId, msg.sender, msg.value, 5);
+        emit RedPacketCreated(packetId, msg.sender, msg.value, packetCount);
         return packetId;
     }
 
@@ -47,7 +49,7 @@ contract RedPacket {
 
         packet.claimed[msg.sender] = true;
 
-        uint256 claimIndex = 5 - packet.remainingPackets;
+        uint256 claimIndex = packet.amounts.length - packet.remainingPackets;
         uint256 amount = packet.amounts[claimIndex];
 
         packet.remainingAmount -= amount;

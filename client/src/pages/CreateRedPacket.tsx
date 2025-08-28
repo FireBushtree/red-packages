@@ -11,6 +11,8 @@ declare global {
 function CreateRedPacket() {
   const [account, setAccount] = useState<string>('')
   const [isConnected, setIsConnected] = useState(false)
+  const [amount, setAmount] = useState('')
+  const [count, setCount] = useState('')
   const [message, setMessage] = useState('')
   const [isCreating, setIsCreating] = useState(false)
 
@@ -56,24 +58,36 @@ function CreateRedPacket() {
       return
     }
 
-    if (!message) {
-      alert('请填写祝福语')
+    if (!amount || !count || !message) {
+      alert('请填写完整信息')
+      return
+    }
+
+    if (parseFloat(amount) <= 0) {
+      alert('金额必须大于0')
+      return
+    }
+
+    if (parseInt(count) <= 0 || parseInt(count) > 100) {
+      alert('红包数量必须在1-100之间')
       return
     }
 
     setIsCreating(true)
     try {
       const contract = await getContract()
-      const fixedAmount = ethers.parseEther('0.0001')
+      const amountWei = ethers.parseEther(amount)
 
-      const tx = await contract.createRedPacket({
-        value: fixedAmount
+      const tx = await contract.createRedPacket(parseInt(count), {
+        value: amountWei,
       })
 
       const receipt = await tx.wait()
       const packetId = receipt.logs[0]?.topics[1]
       alert(`红包创建成功! 红包ID: ${packetId ? parseInt(packetId, 16) : '未知'}`)
 
+      setAmount('')
+      setCount('')
       setMessage('')
     } catch (error) {
       console.error('创建红包失败:', error)
@@ -109,14 +123,43 @@ function CreateRedPacket() {
             </div>
 
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  红包总金额 (ETH)
+                </label>
+                <input
+                  type="number"
+                  step="0.001"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  placeholder="0.1"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  红包数量 (1-100)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={count}
+                  onChange={(e) => setCount(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  placeholder="10"
+                />
+              </div>
+
               <div className="bg-blue-50 p-4 rounded-lg">
                 <p className="text-sm text-blue-700 mb-2">
                   <strong>红包规则：</strong>
                 </p>
                 <ul className="text-sm text-blue-600 space-y-1">
-                  <li>• 固定金额：0.0001 ETH</li>
-                  <li>• 固定数量：5个红包</li>
-                  <li>• 系统将自动分配每个红包的金额</li>
+                  <li>• 可自定义红包总金额和数量</li>
+                  <li>• 系统将随机分配每个红包的金额</li>
+                  <li>• 每个红包至少包含1 wei</li>
                 </ul>
               </div>
 
