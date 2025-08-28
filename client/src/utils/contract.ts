@@ -40,3 +40,16 @@ export const getContract = async () => {
 
   return contract
 }
+
+export const getReadOnlyContract = async () => {
+  const contractInfo = await loadContractInfo()
+  const networkId = '5777'
+  
+  // 使用Ganache的RPC端点创建只读provider
+  const provider = new ethers.JsonRpcProvider('http://127.0.0.1:7545')
+  
+  const contractAddress = contractInfo.networks[networkId].address
+  const contract = new ethers.Contract(contractAddress, contractInfo.abi, provider)
+
+  return contract
+}

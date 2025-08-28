@@ -3,6 +3,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import CreateRedPacket from './pages/CreateRedPacket'
+import ClaimRedPacket from './pages/ClaimRedPacket'
 
 function Home() {
   const [count, setCount] = useState(0)
@@ -42,6 +43,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateRedPacket />} />
+        <Route path="/claim/:id" element={<ClaimRedPacket />} />
       </Routes>
     </Router>
   )
